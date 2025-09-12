@@ -65,11 +65,11 @@ func move(delta: float) -> Vector2:
 	return velocity
 
 func simple_movement() -> Vector2:
-	print("Simple")
+	#print("Simple")
 	return to_local(goal.global_position).normalized()
 
 func complex_movement() -> Vector2:
-	print("Complex")
+	#print("Complex")
 	return to_local(_nav_agent.get_next_path_position()).normalized()
 
 func update_direction(new_dir: Vector2) -> void:

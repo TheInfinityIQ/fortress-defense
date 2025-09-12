@@ -3,6 +3,7 @@ extends TileMapLayer
 @onready var _obsticles: TileMapLayer = $"../Obsticles"
 @onready var _bridges: TileMapLayer = $"../Bridges"
 
+const TERRAIN_TILESET_ID = 3
 const OBSTICLES_TILESET_ID = 6
 const BRIDGES_TILESET_ID = 1
 
@@ -13,7 +14,10 @@ func _use_tile_data_runtime_update(coords: Vector2i) -> bool:
 
 func _tile_data_runtime_update(coords: Vector2i, tile_data: TileData) -> void:
 	if coords in _obsticles.get_used_cells_by_id(OBSTICLES_TILESET_ID):
-		tile_data.set_navigation_polygon(OBSTICLES_TILESET_ID, null)
+		print("here")
+		tile_data.set_navigation_polygon(TERRAIN_TILESET_ID, null)
 	
-	if coords in _bridges.get_used_cells_by_id(BRIDGES_TILESET_ID):
-		tile_data.set_navigation_polygon(BRIDGES_TILESET_ID, null)
+	#if coords in _bridges.get_used_cells_by_id(BRIDGES_TILESET_ID):
+		#var nav_polygon: NavigationPolygon = NavigationPolygon.new()
+		#nav_polygon.
+		#tile_data.set_navigation_polygon(BRIDGES_TILESET_ID, nav_polygon)
