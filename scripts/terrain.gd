@@ -1,7 +1,7 @@
 extends TileMapLayer
 
-@onready var _obsticles: TileMapLayer = $Obsticles
-@onready var _bridges: TileMapLayer = $Bridges
+@onready var _obsticles: TileMapLayer = $"../Obsticles"
+@onready var _bridges: TileMapLayer = $"../Bridges"
 
 const OBSTICLES_TILESET_ID = 6
 const BRIDGES_TILESET_ID = 1
