@@ -550,7 +550,6 @@ animation = &"down_idle"
 frame_progress = 0.0679101
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_postprocessing = 1
 avoidance_enabled = true
