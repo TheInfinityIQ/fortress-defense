@@ -604,7 +604,8 @@ position_smoothing_speed = 25.0
 [node name="FollowerCircle" type="Sprite2D" parent="Followers/Follower"]
 texture = ExtResource("122_vk2pw")
 
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
-position = Vector2(0, 16)
-radius = 30.0
-affect_navigation_mesh = true
+[node name="Label" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -84.0
+offset_right = 20.0
+offset_bottom = -61.0

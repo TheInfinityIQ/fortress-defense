@@ -24,6 +24,8 @@ func _ready() -> void:
 	follower_positions = _follower_positions.get_children()
 
 func _physics_process(delta: float) -> void:
+	$Label.text = "%sw" % [position]
+	
 	handle_movement(delta)
 	
 	handle_zoom()

@@ -17,9 +17,10 @@ const MAX_PATHING_OFFSET: int = 5
 
 func _ready() -> void:
 	_nav_agent.target_desired_distance = MAX_PATHING_OFFSET
+	_nav_agent.max_speed = movement_speed
 
 func _physics_process(delta: float) -> void:
-	_on_navigation_agent_2d_velocity_computed(move(delta))
+	move(delta)
 	animate_movement()
 	queue_redraw()
 	
@@ -33,10 +34,7 @@ func _on_selection_event(viewport: Node, event: InputEvent, shape_idx: int) -> v
 		is_selected = true
 
 func _on_target_reached() -> void:
-	is_moving = false
-
-func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
-	pass # Replace with function body.
+	is_moving = false 
 
 func determine_movement_type() -> String:
 	_raycast.target_position = to_local(goal.global_position)
@@ -45,9 +43,9 @@ func determine_movement_type() -> String:
 		return "COMPLEX"
 	return "SIMPLE"
 
-func move(delta: float) -> Vector2: 
+func move(delta: float) -> void: 
 	if global_position.distance_to(goal.global_position) <= MAX_PATHING_OFFSET:
-		return Vector2.ZERO
+		return
 	var target_direction: Vector2 = Vector2.ZERO
 	movement_state = determine_movement_type()
 	
@@ -59,17 +57,15 @@ func move(delta: float) -> Vector2:
 	is_moving = true
 	
 	update_direction(target_direction)
+	_nav_agent.set_velocity(velocity)
 	velocity = target_direction * movement_speed * delta
-	move_and_slide()
 	
-	return velocity
+	move_and_slide()
 
 func simple_movement() -> Vector2:
-	#print("Simple")
 	return to_local(goal.global_position).normalized()
 
 func complex_movement() -> Vector2:
-	#print("Complex")
 	return to_local(_nav_agent.get_next_path_position()).normalized()
 
 func update_direction(new_dir: Vector2) -> void:
