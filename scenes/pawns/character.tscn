@@ -136,6 +136,7 @@
 [ext_resource type="Texture2D" uid="uid://yhreo2xdcbeg" path="res://assets/characters/selection_circle.png" id="122_vk2pw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4bae"]
+radius = 30.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v2jkf"]
 animations = [{
@@ -585,9 +586,8 @@ animations = [{
 safe_margin = 0.001
 script = ExtResource("1_88q7l")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionBody" type="CollisionShape2D" parent="."]
 position = Vector2(0, 16)
-scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_f4bae")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -597,15 +597,15 @@ animation = &"up_walking"
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_speed = 25.0
 
+[node name="Label" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -84.0
+offset_right = 20.0
+offset_bottom = -61.0
+
 [node name="Followers" type="Node2D" parent="."]
 
 [node name="Follower" type="Node2D" parent="Followers"]
 
 [node name="FollowerCircle" type="Sprite2D" parent="Followers/Follower"]
 texture = ExtResource("122_vk2pw")
-
-[node name="Label" type="Label" parent="."]
-offset_left = -20.0
-offset_top = -84.0
-offset_right = 20.0
-offset_bottom = -61.0

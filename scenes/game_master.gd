@@ -5,4 +5,6 @@ extends Node2D
 @onready var characterPawn: CharacterBody2D = $Pawns/Character
 
 func _ready() -> void:
-	characterPawn.followers.append(aiPawn)
+	var followers: Array[CharacterBody2D] = []
+	followers.append(aiPawn)
+	characterPawn.assign_followers(followers)
