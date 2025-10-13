@@ -9,6 +9,8 @@ var _zoom_default: Vector2 = Vector2.ONE
 
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
+@onready var _game_master: Node = $"../../../GameMaster"
+var selection_drag_box: ColorRect
 
 var id: int
 var state: String = "idle"
@@ -19,17 +21,35 @@ var is_moving: bool = false
 
 var followers: Array[CharacterBody2D]
 var follower_spots: Array[Node]
+var selection: Array[CharacterBody2D]
+
+var is_dragging: bool = false
+var drag_start: Vector2
+var drag_end: Vector2
 
 func _ready() -> void:
 	follower_spots = $Followers.get_children()
 
 func _physics_process(delta: float) -> void:
-	$Label.text = "%sw" % [position]
-	
 	handle_movement(delta)
-	
 	handle_zoom()
-	update_follower_grid()
+	#update_follower_grid()
+	if is_dragging:
+		update_drag_selection_box()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+			init_selection_drag()
+		elif is_dragging:
+				finish_drag_selection()
+		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+			assign_goals_to_selected_units(get_global_mouse_position())
+
+func assign_goals_to_selected_units(new_goal: Vector2) -> void:
+	for pawn in _game_master.player_selected_pawns:
+		pawn.select()
+		pawn.set_goal(new_goal)
 
 func assign_followers(new_followers: Array[CharacterBody2D]) -> void:
 	followers = new_followers
@@ -141,3 +161,39 @@ func update_follower_grid() -> void:
 		follower_spot.position = to_local(global_spot_position)
 		followers[index].set_goal(global_spot_position)
 		index += 1
+
+func init_selection_drag():
+	_game_master.clear_player_selected_pawns()
+	
+	is_dragging = true
+	drag_start = to_local(get_global_mouse_position())
+	selection_drag_box = ColorRect.new()
+	selection_drag_box.color = Color(0, 0.5, 1, 0.25)
+	selection_drag_box.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	add_child(selection_drag_box)
+
+func update_drag_selection_box() -> void:
+	drag_end = to_local(get_global_mouse_position())
+	var rect_pos = Vector2(
+		min(drag_start.x, drag_end.x),
+		min(drag_start.y, drag_end.y)
+	)
+	var rect_size = (drag_end - drag_start).abs()
+
+	selection_drag_box.position = rect_pos
+	selection_drag_box.size = rect_size
+
+func finish_drag_selection() -> void:
+	is_dragging = false
+	select_units_in_box()
+	if selection_drag_box and is_instance_valid(selection_drag_box):
+		selection_drag_box.queue_free()
+
+func select_units_in_box() -> void:
+	_game_master.player_selected_pawns = []
+	for pawn in _game_master.player_selectable_pawns:
+		if is_in_selection_box(pawn):
+			_game_master.add_player_selected_pawn(pawn)
+
+func is_in_selection_box(pawn: Node2D) -> bool:
+	return selection_drag_box.get_rect().has_point(to_local(pawn.position))

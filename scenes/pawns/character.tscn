@@ -597,12 +597,6 @@ animation = &"up_walking"
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_speed = 25.0
 
-[node name="Label" type="Label" parent="."]
-offset_left = -20.0
-offset_top = -84.0
-offset_right = 20.0
-offset_bottom = -61.0
-
 [node name="Followers" type="Node2D" parent="."]
 
 [node name="Follower" type="Node2D" parent="Followers"]
